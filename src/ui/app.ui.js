@@ -9,11 +9,13 @@ import { state, setUI, flashMessageKey } from "../state/state.js";
 import { createRolePage } from "./pages/RolePage.js";
 import { createTeacherPage } from "./pages/TeacherPage.js";
 import { createStudentPage } from "./pages/StudentPage.js";
+import { createActivityLog } from "./components/ActivityLog.js";
 
 import { registerRender, triggerRender } from "./render.js";
-import { toggleTheme } from "../theme/theme.js";
+import { toggleTheme, getCurrentTheme } from "../theme/theme.js";
 
 import { getLanguage, setLanguage, t } from "../i18n/i18n.js";
+import { logActivity, ActivityEventType } from "../services/activity.service.js";
 
 let mountEl = null;
 
@@ -31,8 +33,23 @@ function render() {
   const app = document.createElement("div");
   app.className = "app";
 
-  app.append(createHeader(), createStatusBar(), createMain());
+  app.append(
+    createHeader(),
+    createStatusBar(),
+    createMainContent()
+  );
   mountEl.append(app);
+}
+
+function createMainContent() {
+  const container = document.createElement("div");
+  container.className = "main-content";
+
+  const main = createMain();
+  const activityLog = createActivityLog();
+
+  container.append(main, activityLog);
+  return container;
 }
 
 function createHeader() {
@@ -81,11 +98,13 @@ function createLanguageToggle() {
 
   btnES.addEventListener("click", () => {
     setLanguage("es");
+    logActivity(ActivityEventType.LANGUAGE_CHANGED, { language: "es" });
     triggerRender();
   });
 
   btnEN.addEventListener("click", () => {
     setLanguage("en");
+    logActivity(ActivityEventType.LANGUAGE_CHANGED, { language: "en" });
     triggerRender();
   });
 
@@ -104,7 +123,10 @@ function createThemeToggle() {
   themeBtn.append(icon);
 
   themeBtn.addEventListener("click", () => {
+    const currentTheme = getCurrentTheme();
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
     toggleTheme();
+    logActivity(ActivityEventType.THEME_CHANGED, { theme: nextTheme });
     triggerRender();
   });
 
@@ -157,6 +179,7 @@ function createStatusBar() {
 
       try {
         await copyToClipboard(code);
+        logActivity(ActivityEventType.CODE_COPIED, { code: code });
         flashMessageKey("status.codeCopied", 1500);
         triggerRender();
       } catch {

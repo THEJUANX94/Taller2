@@ -4,6 +4,7 @@
 import { state, setUI, resetApp } from "../../state/state.js";
 import { triggerRender } from "../render.js";
 import { t } from "../../i18n/i18n.js";
+import { logActivity, ActivityEventType } from "../../services/activity.service.js";
 
 export function createStudentPage() {
   const container = document.createElement("main");
@@ -78,6 +79,7 @@ export function createStudentPage() {
   btnBack.textContent = t("role.changeProfile");
 
   btnBack.addEventListener("click", () => {
+    logActivity(ActivityEventType.PROFILE_CHANGED);
     resetApp();
     setUI({ studentCodeDraft: "" });
     triggerRender();
