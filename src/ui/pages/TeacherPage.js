@@ -11,6 +11,7 @@ import {
 import { triggerRender } from "../render.js";
 import { createSession, closeSession } from "../../services/session.service.js";
 import { t } from "../../i18n/i18n.js";
+import { logActivity, ActivityEventType } from "../../services/activity.service.js";
 
 export function createTeacherPage() {
   const container = document.createElement("main");
@@ -45,6 +46,7 @@ export function createTeacherPage() {
       action: async () => {
         const session = await createSession();
         setState({ session });
+        logActivity(ActivityEventType.SESSION_OPENED, { code: session?.code });
       },
       successKey: "teacher.createdOk",
     });
@@ -56,6 +58,7 @@ export function createTeacherPage() {
       action: async () => {
         const updated = await closeSession(state.session);
         setState({ session: updated });
+        logActivity(ActivityEventType.SESSION_CLOSED);
       },
       successKey: "teacher.closedOk",
     });
@@ -63,6 +66,7 @@ export function createTeacherPage() {
 
   // Volver al inicio: limpia estado de rol y sesión para evitar estados pegados.
   btnBack.addEventListener("click", () => {
+    logActivity(ActivityEventType.PROFILE_CHANGED);
     resetApp();
     triggerRender();
   });

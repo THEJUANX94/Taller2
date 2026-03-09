@@ -62,6 +62,25 @@ export const messages = {
     theme: { toggleAria: "Cambiar tema" },
     lang: { toggleAria: "Cambiar idioma", es: "ES", en: "EN" },
 
+    activity: {
+      title: "📋 Historial de acciones",
+      empty: "Sin eventos aún.",
+      clearBtn: "Limpiar historial",
+      clearConfirm: "¿Estás seguro? Haz clic de nuevo para confirmar",
+      justNow: "justo ahora",
+      minutesAgo: "hace {n} min",
+      hoursAgo: "hace {n} h",
+      events: {
+        role_selected: "Seleccionó perfil",
+        language_changed: "Cambió idioma",
+        theme_changed: "Cambió tema",
+        session_opened: "Abrió sesión",
+        session_closed: "Cerró sesión",
+        code_copied: "Copió código",
+        profile_changed: "Volvió a home",
+      },
+    },
+
     errors: {
       tempCreateSession: "Error temporal creando la sesión. Intenta de nuevo.",
       tempCloseSession: "Error temporal cerrando la sesión. Intenta de nuevo.",
@@ -134,6 +153,25 @@ export const messages = {
 
     theme: { toggleAria: "Toggle theme" },
     lang: { toggleAria: "Toggle language", es: "ES", en: "EN" },
+
+    activity: {
+      title: "📋 Activity log",
+      empty: "No events yet.",
+      clearBtn: "Clear history",
+      clearConfirm: "Are you sure? Click again to confirm",
+      justNow: "just now",
+      minutesAgo: "{n}m ago",
+      hoursAgo: "{n}h ago",
+      events: {
+        role_selected: "Selected profile",
+        language_changed: "Changed language",
+        theme_changed: "Changed theme",
+        session_opened: "Opened session",
+        session_closed: "Closed session",
+        code_copied: "Copied code",
+        profile_changed: "Returned to home",
+      },
+    },
 
     errors: {
       tempCreateSession:
