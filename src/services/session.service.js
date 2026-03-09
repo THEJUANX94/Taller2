@@ -59,6 +59,34 @@ export async function closeSession(session) {
 }
 
 /**
+ * Simula la validación de un código para unirse a una sesión.
+ * Retorna true si es válido (o si Math.random() < 0.8 como simulación).
+ * Falla simulando un error de red o código inválido (para UI).
+ */
+export async function joinSession(codeStr) {
+  // Simular retraso de 300-600ms
+  const delay = Math.floor(Math.random() * 300) + 300;
+  await sleep(delay);
+
+  // 20% de probabilidad de fallo de red simulado
+  if (Math.random() < 0.2) {
+    const err = new Error("TEMP_JOIN_SESSION");
+    err.code = "errors.tempJoinSession";
+    throw err;
+  }
+
+  // 20% de probabilidad de que el código sea estructuralmente rechazado por el "servidor"
+  if (Math.random() < 0.2) {
+    const err = new Error("INVALID_CODE");
+    err.code = "errors.invalidCodeServer";
+    throw err;
+  }
+
+  // Éxito simulado
+  return { status: "open", code: codeStr };
+}
+
+/**
  * Helper para simular latencia (Promise).
  */
 function sleep(ms) {
