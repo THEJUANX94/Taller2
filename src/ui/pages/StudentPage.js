@@ -33,10 +33,14 @@ export function createStudentPage() {
   input.inputMode = "numeric";
   input.autocomplete = "one-time-code";
   input.placeholder = t("student.codePlaceholder");
+  input.maxLength = 10;
   input.value = state.ui?.studentCodeDraft || "";
 
   input.addEventListener("input", (e) => {
-    setUI({ studentCodeDraft: String(e.target.value ?? "") });
+    let sanitized = String(e.target.value ?? "").replace(/\D/g, "");
+    sanitized = sanitized.substring(0, 10);
+    e.target.value = sanitized;
+    setUI({ studentCodeDraft: sanitized });
   });
 
   field.append(label, input);
